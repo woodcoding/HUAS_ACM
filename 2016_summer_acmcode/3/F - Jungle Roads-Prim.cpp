@@ -5,6 +5,7 @@
 using namespace std;
 
 const int maxn=26+1;
+const int INF=999999;
 int omap[maxn][maxn];
 bool flag[maxn];
 int n, i, j;
@@ -13,16 +14,14 @@ char ch1, ch2;
 void Init()
 {
     int num1, num2, x, y;
-    for(i=0;i<=n;i++)for(j=0;j<=n;j++)omap[i][j]=999999; //还是给个比较大的值比较靠谱
+    memset(omap, INF, sizeof(omap));        //还是给个比较大的值比较靠谱
     memset(flag, 0, sizeof(flag));
     for(i=1;i<=n-1;i++)
     {
-       getchar();
-       scanf("%c %d", &ch1, &num1);
+       cin>>ch1>>num1;
        for(j=1;j<=num1;j++)
        {
-           getchar();
-           scanf("%c %d", &ch2, &num2);
+           cin>>ch2>>num2;
            x=ch1-'A'+1;               //字母转化为数字数组
            y=ch2-'A'+1;
            omap[x][y]=omap[y][x]=num2;
@@ -57,11 +56,11 @@ int Prim()
 
 int main()
 {
-    while(scanf("%d", &n)!=EOF && n)
+    while(cin>>n && n)
     {
         Init();
         int ans=Prim();
-        printf("%d\n", ans);
+        cout<<ans<<endl;
     }
     return 0;
 }
