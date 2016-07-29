@@ -1,56 +1,48 @@
 #include <iostream>
-#include <cstdio>
 #include <algorithm>
-
+#include <cstdio>
 using namespace std;
 
-struct Village
+const int maxn=10000;
+const int maxm=100;
+struct Node
 {
-    int a;
-    int b;
-    int len;        //两个村庄的距离
-};
+    int u, v, val;
+}node[maxn];
 
-const int maxn=5000;        //这是给出边数的数目，不是村庄的数目
-Village village[maxn];
-int flag[maxn];
-int a, b, len, i, j, n, num;
+int n, num, i, j;
+int parent[maxm];
 
 void Init()
 {
     num=n*(n-1)/2;
-    for(i=1;i<=num;i++)     //获得初始数据
-        scanf("%d%d%d", &village[i].a, &village[i].b, &village[i].len);
-    for(i=1;i<=n;i++)flag[i]=i;     //初始化父节点为自己
+    for(i=0;i<num;i++)
+        scanf("%d%d%d", &node[i].u, &node[i].v, &node[i].val);  //获得边权值
+    for(i=1;i<=n;i++)
+        parent[i]=i;        //初始化父节点为自己
 }
 
-bool cmp(Village cmpa, Village cmpb)
+bool cmp(Node a, Node b)
 {
-    return cmpa.len<cmpb.len;       //距离从小到大排列
+    return a.val<b.val;     //权值排序，从小到大
 }
 
 int Find(int x)
-{   //找根节点
-    if(flag[x]==x)return x;
-    flag[x]=Find(flag[x]);
-    return flag[x];
+{
+    return x==parent[x]?x:parent[x]=Find(parent[x]);    //找父节点并且使用路径压缩
 }
 
-int Process()
+int Kruskal()
 {
     int sum=0;
-    for(i=1;i<=num;i++)
+    for(i=0;i<num;i++)
     {
-        int fa=Find(village[i].a);
-        int fb=Find(village[i].b);
-        if(fa==fb)continue;
-        else
+        int fa=Find(node[i].u);
+        int fb=Find(node[i].v);
+        if(fa!=fb)      //不在同一个集合就结合
         {
-            sum+=village[i].len;        //根节点不同，加入距离
-            if(fa>fb)       //大于小于都行，加入同一个集合
-                flag[fb]=fa;
-            else
-                flag[fa]=fb;
+            sum+=node[i].val;
+            parent[fa]=fb;
         }
     }
     return sum;
@@ -58,11 +50,11 @@ int Process()
 
 int main()
 {
-    while(scanf("%d", &n)!=EOF &&n)
+    while(scanf("%d", &n)!=EOF && n)
     {
         Init();
-        sort(village+1, village+1+num, cmp);
-        int ans=Process();
+        sort(node, node+num, cmp);
+        int ans=Kruskal();
         printf("%d\n", ans);
     }
     return 0;
