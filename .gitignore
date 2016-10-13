@@ -1,6 +1,11 @@
 # codeblocks
+
 bin/
 obj/
+
 *.cbp
+
 *.depend
+
 *.layout
+*.txt
