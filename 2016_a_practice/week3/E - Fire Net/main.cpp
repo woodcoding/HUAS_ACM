@@ -42,10 +42,7 @@ int main()
         ans = 0;
         memset(flag, 0, sizeof(flag));
         for(int i=0;i<n;i++)scanf("%s", &omap[i][0]);
-        for(int i=0;i<n*n;i++){
-            int x=i/n, y=i%n;
-            if(chkb(x,y)&&chkg(x,y))dfs(x, y, 0);
-        }
+        for(int i=0;i<n*n;i++)dfs(i/n, i%n, 0);
         cout<<ans<<endl;
     }
     return 0;
