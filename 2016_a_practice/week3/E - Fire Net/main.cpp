@@ -27,7 +27,7 @@ void dfs(int x, int y, int v){
     memcpy(temp, flag, sizeof(temp));
     flag[x][y] = 1;
     v++;
-    for(int i=0;i<n;i++){
+    for(int i=0;i<4;i++){
         for(dx=x+go[i][0],dy=y+go[i][1];chkb(dx, dy) && omap[dx][dy]!='X';dx+=go[i][0],dy+=go[i][1])flag[dx][dy]=1;
     }
     if(v>ans)ans=v;
@@ -37,11 +37,11 @@ void dfs(int x, int y, int v){
 
 int main()
 {
-    freopen("in.txt", "r", stdin);
+    //freopen("in.txt", "r", stdin);
     while(cin>>n && n){
         ans = 0;
         memset(flag, 0, sizeof(flag));
-        for(int i=0;i<n;i++)scanf("%s", &omap[i][0]);
+        for(int i=0;i<n;i++)scanf("%s", &omap[i]);
         for(int i=0;i<n*n;i++)dfs(i/n, i%n, 0);
         cout<<ans<<endl;
     }
