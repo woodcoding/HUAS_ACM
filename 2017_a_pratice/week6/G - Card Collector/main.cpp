@@ -31,7 +31,7 @@ int main()
             }
             dp[i]/=(1-g);
         }
-        printf("%.3lf\n", dp[0]);
+        printf("%.4lf\n", dp[0]);
     }
     return 0;
 }
