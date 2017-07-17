@@ -9,3 +9,5 @@ obj/
 
 *.layout
 *.txt
+*.exe
+*.o
