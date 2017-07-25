@@ -45,12 +45,15 @@ void Push_down(int id){     //lazyÏÂ·Å
 void Build(int id, int l, int r){
     node[id].l=l;
     node[id].r=r;
-    node[id].v=p[r]-p[l]+1;
     node[id].lazy=0;
-    if(l==r)return;
+    if(l==r){
+        node[id].v=p[l+1]-p[l];
+        return;
+    }
     int mid=(l+r)>>1;
     Build(id<<1, l, mid);
     Build(id<<1|1, mid+1, r);
+    node[id].v=node[id<<1].v+node[id<<1|1].v;
 }
 
 void Update(int id, int l, int r){
@@ -101,9 +104,7 @@ int main()
         t=op[i].cmd;
         l=idx[op[i].l];
         r=idx[op[i].r];
-        if(op[i].cmd==1){
-            Update(1, l, r);
-        }
+        if(op[i].cmd==1)Update(1, l, r);
         else printf("%d\n", Query(1, l, r));
     }
     return 0;
