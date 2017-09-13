@@ -26,31 +26,32 @@ const int maxn=5005;
 
 int n, m;
 double dis[maxn];
-int inq[maxn], cnt[maxn], w[maxn];
+int w[maxn];
+bool vis[maxn];
 vector<pair<int, int> > E[maxn];
-queue<int> Q;
 
-bool spfa(double mid){
-    while(!Q.empty())Q.pop();
-    for(int i=1;i<=n;i++){
-        dis[i]=0;inq[i]=1;cnt[i]=1;
-        Q.push(i);
-    }
-    while(!Q.empty()){
-        int u=Q.front();
-        Q.pop();
-        inq[u]=0;
-        for(int i=0;i<E[u].size();i++){
-            int v=E[u][i].first;
-            double val=w[v]*1.0-1.0*mid*E[u][i].second;
-            if(dis[v]<dis[u]+val){
-                dis[v]=dis[u]+val;
-                if(++cnt[v]>=n)return 1;
-                if(inq[v])continue;
-                Q.push(v);
-                inq[v]=1;
+bool spfa(int u, double mid){
+    vis[u]=1;
+    for(int i=0;i<E[u].size();i++){
+        int v=E[u][i].first;
+        double val=w[v]*1.0-1.0*mid*E[u][i].second;
+        if(dis[v]<dis[u]+val){
+            dis[v]=dis[u]+val;
+            if(!vis[v]){
+                if(spfa(v, mid))return 1;
             }
+            else return 1;
         }
+    }
+    vis[u]=0;
+    return 0;
+}
+
+bool work(double mid){
+    mem(dis, 0);
+    mem(vis, 0);
+    for(int i=1;i<=n;i++){
+        if(spfa(i, mid))return 1;
     }
     return 0;
 }
@@ -68,10 +69,11 @@ int main()
         double l=0, r=1000, mid;
         while(r-l>eps){
             mid=(l+r)/2;
-            if(spfa(mid))l=mid;
+            if(work(mid))l=mid;
             else r=mid;
         }
-        printf("%.2f\n", l);
+        if(l==0&&r==1000)printf("0\n");
+        else printf("%.2f\n", l);
     }
     return 0;
 }
